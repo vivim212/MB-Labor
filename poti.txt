@@ -1,0 +1,19 @@
+const int potiPin = A0; // Pin für den Potentiometerausgang
+float sensorValue = 0;
+float position_mm = 0;
+const float Lmax = 1000.0; // Maximale Seillänge in mm
+
+void setup() {
+    Serial.begin(9600);
+}
+
+void loop() {
+    sensorValue = analogRead(potiPin); // Analogen Wert auslesen
+    position_mm = (sensorValue / 1023.0) * Lmax; // Position berechnen
+
+    Serial.print("Position: ");
+    Serial.print(position_mm);
+    Serial.println(" mm");
+
+    delay(500);
+}
