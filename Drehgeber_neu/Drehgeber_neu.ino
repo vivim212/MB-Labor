@@ -12,6 +12,7 @@ void setup() {
   Serial.begin(9600);
 }
 
+<<<<<<< HEAD
 void loop() {
   static long lastTicks = 0;
   if (encoderTicks != lastTicks) {
@@ -26,5 +27,28 @@ void handleEncoderA() {
     encoderTicks++;
   } else {
     encoderTicks--;
+=======
+void loop() 
+{
+  readEncoder();
+  Serial.print("Position:");
+  Serial.print(encoderPos * mmPerPulse);
+  Serial.println(" mm");
+  delay(500);
+
+
+}
+
+
+void readEncoder()
+{
+  bool signalA = digitalRead(encoderPinA);
+  bool signalB = digitalRead(encoderPinB);
+  bool xorResult = signalA ^ signalB;  // XOR-Gatter zur Richtungserkennung
+
+  if(xorResult)
+  {
+    encoderPos++;
+>>>>>>> b91b26d7eafe8a01b79cf770f08c5975dbfc1f9f
   }
 }
