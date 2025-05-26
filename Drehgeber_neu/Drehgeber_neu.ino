@@ -6,8 +6,8 @@ float mmPerPulse = 0.000104; //bei 2400 Umdrehungen
 
 void setup() 
 {
-  pinMode(encoderPinA, INPUT_PULLUP);
-  pinMode(encoderPinB, INPUT_PULLUP);
+  pinMode(encoderPinA, INPUT);
+  pinMode(encoderPinB, INPUT);
   attachInterrupt(digitalPinToInterrupt(encoderPinA), readEncoder, CHANGE);
   Serial.begin(9600);
 
