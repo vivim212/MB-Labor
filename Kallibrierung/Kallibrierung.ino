@@ -6,7 +6,7 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);// I²C-LCD (Adresse 0x27), 16 Zeichen × 2 Z
 const int DOUT_PIN = 4;  // DT auf anderen freien Pin gelegt
 const int SCK_PIN  = 3;  // SCK
 
-const float CALIBRATION_FACTOR = -18530;;  
+const float CALIBRATION_FACTOR = -17893.53;;  
 
 HX711 scale;
 
@@ -109,21 +109,21 @@ if(zaehler == 1){//Programm startet durch drücken des Tasters, geht danach übe
   lcd.setCursor(0, 1);
   lcd.print("Dehnung:");
   lcd.setCursor(14, 0);
-  lcd.print("N");
+  lcd.print("kg");
   lcd.setCursor(14, 1);
   lcd.print("Pr");
 }
 
 while(zaehler == 2){//Mess-Schleife, wird verlassen bei betätigen des Tasters
 
-  weight = scale.get_units(4);//Hier kann auch Mittelwert aus mehreren Werten gebildet werden, aber nach möglichkeit lange Funktionen vermeiden,um ein verpassen des Taster-Drucks zu verhindern 
-  F = weight * 9.81;
+  weight = scale.get_units(5);//Hier kann auch Mittelwert aus mehreren Werten gebildet werden, aber nach möglichkeit lange Funktionen vermeiden,um ein verpassen des Taster-Drucks zu verhindern 
+  //F = weight * 9.81;
   lcd.setCursor(7, 0);
-  lcd.print(F, 2); // Bessere Anzeige: 2 Nachkommastellen
+  lcd.print(weight, 3); // Bessere Anzeige: 2 Nachkommastellen
   double Dehnung = Wegkorrektur(F);
   lcd.setCursor(9, 1);
   lcd.print(Dehnung, 3); // Bessere Anzeige: 3 Nachkommastellen
-  Serial.print(F);//Ausgabe Messwerte Serieller Monitor
+  Serial.print(weight);//Ausgabe Messwerte Serieller Monitor
   Serial.print("  ");
   Serial.println(Dehnung);
 
@@ -133,10 +133,7 @@ while(zaehler == 2){//Mess-Schleife, wird verlassen bei betätigen des Tasters
 
   if (tasterGedrueckt()){
     zaehler = 3;
-    lcd.clear();
-  lcd.setCursor(0, 0);
-  lcd.print("Beendet");
-    delay(2000);
+    delay(500);
   }
 }//gibt sehr schnell Werte aus, über serielle Schnittstelle, ev. verzögern durch Mittelwert.
 //erhöhen des Delay nach Tasterdruck, dass vermieden wird, gleich weiter zu springen im Programm, weil Taster zu lange gedrückt
