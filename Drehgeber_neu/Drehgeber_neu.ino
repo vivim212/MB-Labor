@@ -15,7 +15,8 @@ void setup()
 
 void loop() 
 {
-  Serial.print("Position: ");
+  readEncoder();
+  Serial.print(encoderPos);
   Serial.print(encoderPos * mmPerPulse);
   Serial.println(" mm");
   delay(500);
