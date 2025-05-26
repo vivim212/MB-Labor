@@ -2,36 +2,42 @@
 #define encoderPinB 3 // Pin für Phase B
 volatile long encoderCount = 0;
 // Anpassung des mm-Werts: Der Wert mmPerPulse muss basierend auf der Mechanik (z.B. Übersetzung, Radgröße) angepasst werden
-float mmPerPulse = 0.1; // Beispielwert: 0.1 mm pro Impuls (Anpassen!)
+float mmPerPulse = 0.000104; //bei 2400 Umdrehungen
 
 void setup() 
 {
-  pinMode(encoderPinA, INPUT);
-  pinMode(encoderPinB, INPUT);
-  attachInterrupt(digitalPinToInterrupt(encoderPinA), countEncoder, CHANGE);
+  pinMode(encoderPinA, INPUT_PULLUP);
+  pinMode(encoderPinB, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(encoderPinA), readEncoder, CHANGE);
   Serial.begin(9600);
 
 }
 
 void loop() 
 {
-  float positionMM = encoderCount * mmPerPulse;
   Serial.print("Position: ");
-  Serial.print(positionMM);
+  Serial.print(encoderPos * mmPerPulse);
   Serial.println(" mm");
   delay(500);
 
+
 }
 
-// Erkennung der Bewegungsrichtung
-void countEncoder()
+
+void readEncoder()
 {
-  if (digitalRead(encoderPinA) == digitalRead(encoderPinB))
+  bool signalA = digitalRead(ENCODER_A);
+  bool signalB = digitalRead(ENCODER_B);
+  bool xorResult = signalA ^ signalB;  // XOR-Gatter zur Richtungserkennung
+
+  if(xorResult)
   {
-    encoderCount++;
+    encoderPos++;
   }
   else
   {
-    encoderCount--;
+    encoderPos--;
   }
+
+
 }
